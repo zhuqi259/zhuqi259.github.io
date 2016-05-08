@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "7112e61021f06109ceb4"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "cfa3a04cde21743a76f6"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -19972,7 +19972,7 @@
 	        value: function componentWillMount() {
 	            var _this2 = this;
 
-	            _SuperAgent2.default.get('https://api.github.com/repos/saoleigroup/transform-app-server/commits').end(function (error, response) {
+	            _SuperAgent2.default.get('https://api.github.com/repos/zhuqi259/zhuqi259.github.io/commits').end(function (error, response) {
 	                if (!error && response) {
 	                    console.dir(response.body);
 	                    _this2.setState({ commits: response.body });

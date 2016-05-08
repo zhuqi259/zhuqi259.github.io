@@ -12,7 +12,7 @@ class Detail extends React.Component {
         }
     }
     componentWillMount() {
-        ajax.get('https://api.github.com/repos/saoleigroup/transform-app-server/commits').end((error, response) => {
+        ajax.get('https://api.github.com/repos/zhuqi259/zhuqi259.github.io/commits').end((error, response) => {
             if (!error && response) {
                 console.dir(response.body);
                 this.setState({commits: response.body});
