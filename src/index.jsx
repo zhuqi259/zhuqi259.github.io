@@ -3,8 +3,11 @@
 import React, {PropTypes} from 'react';
 import ReactDOM from 'react-dom';
 import Detail from './page/Detail';
+import {Router, Route, IndexRoute, browserHistory} from 'react-router';
 
 console.log('React is up and running!');
 
 ReactDOM.render(
-    <Detail message="This from props Value"/>, document.getElementById('app'));
+    <Router history={browserHistory}>
+    <Route path="/" component={Detail}/>
+</Router>, document.getElementById('app'));
