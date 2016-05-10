@@ -1,13 +1,11 @@
 'use strict';
 
-import React, {PropTypes} from 'react';
-import ReactDOM from 'react-dom';
-import Detail from './page/Detail';
-import {Router, Route, IndexRoute, browserHistory} from 'react-router';
+import React, {Component} from 'react';
+import {render} from 'react-dom';
+import {Router, browserHistory} from 'react-router';
+import routes from './routes';
 
 console.log('React is up and running!');
 
-ReactDOM.render(
-    <Router history={browserHistory}>
-    <Route path="/" component={Detail}/>
-</Router>, document.getElementById('app'));
+render(
+    <Router history={browserHistory} routes={routes}/>, document.getElementById('app'));

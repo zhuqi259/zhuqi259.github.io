@@ -1,9 +1,9 @@
 'use strict';
 
-import React, {PropTypes} from 'react';
+import React, {Component} from 'react';
 import ajax from 'SuperAgent'
 
-class Detail extends React.Component {
+class Detail extends Component {
     constructor(props) {
         super(props);
 
@@ -15,7 +15,8 @@ class Detail extends React.Component {
         }
     }
     fetchFeed(type) {
-        ajax.get(`https://api.github.com/repos/zhuqi259/zhuqi259.github.io/${type}`).end((error, response) => {
+        const baseURL = 'https://api.github.com/repos/saoleigroup';
+        ajax.get(`${baseURL}/${this.props.params.repo}/${type}`).end((error, response) => {
             if (!error && response) {
                 this.setState({[type]: response.body});
             } else {
