@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "cfa3a04cde21743a76f6"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "a1e59dd9db73678956c8"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -19947,6 +19947,8 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -19962,29 +19964,44 @@
 	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Detail).call(this, props));
 
 	        _this.state = {
-	            commits: []
+	            mode: 'commits',
+	            commits: [],
+	            forks: [],
+	            pulls: []
 	        };
 	        return _this;
 	    }
 
 	    _createClass(Detail, [{
-	        key: 'componentWillMount',
-	        value: function componentWillMount() {
+	        key: 'fetchFeed',
+	        value: function fetchFeed(type) {
 	            var _this2 = this;
 
-	            _SuperAgent2.default.get('https://api.github.com/repos/zhuqi259/zhuqi259.github.io/commits').end(function (error, response) {
+	            _SuperAgent2.default.get('https://api.github.com/repos/zhuqi259/zhuqi259.github.io/' + type).end(function (error, response) {
 	                if (!error && response) {
-	                    console.dir(response.body);
-	                    _this2.setState({ commits: response.body });
+	                    _this2.setState(_defineProperty({}, type, response.body));
 	                } else {
-	                    console.log('There was an error fetching from GitHub', error);
+	                    console.log('There was an error fetching ' + type + ' from GitHub', error);
 	                }
 	            });
 	        }
 	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var commits = this.state.commits.map(function (commit, index) {
+	        key: 'componentWillMount',
+	        value: function componentWillMount() {
+	            this.fetchFeed('commits');
+	            this.fetchFeed('forks');
+	            this.fetchFeed('pulls');
+	        }
+	    }, {
+	        key: 'selectMode',
+	        value: function selectMode(mode) {
+	            //    this.setState({mode});
+	            this.setState({ mode: '' + mode });
+	        }
+	    }, {
+	        key: 'renderCommits',
+	        value: function renderCommits() {
+	            return this.state.commits.map(function (commit, index) {
 	                var author = commit.author ? commit.author.login : 'Anonymous';
 	                return _react2.default.createElement(
 	                    'p',
@@ -20003,10 +20020,85 @@
 	                    '.'
 	                );
 	            });
+	        }
+	    }, {
+	        key: 'renderForks',
+	        value: function renderForks() {
+	            return this.state.forks.map(function (fork, index) {
+	                var owner = fork.owner ? fork.owner.login : 'Anonymous';
+	                return _react2.default.createElement(
+	                    'p',
+	                    { key: index },
+	                    _react2.default.createElement(
+	                        'strong',
+	                        null,
+	                        owner
+	                    ),
+	                    ': forked to',
+	                    _react2.default.createElement(
+	                        'a',
+	                        { href: fork.html_url },
+	                        fork.html_url
+	                    ),
+	                    'at ',
+	                    fork.created_at,
+	                    '.'
+	                );
+	            });
+	        }
+	    }, {
+	        key: 'renderPulls',
+	        value: function renderPulls() {
+	            return this.state.pulls.map(function (pull, index) {
+	                var user = pull.user ? pull.user.login : 'Anonymous';
+	                return _react2.default.createElement(
+	                    'p',
+	                    { key: index },
+	                    _react2.default.createElement(
+	                        'strong',
+	                        null,
+	                        user
+	                    ),
+	                    ':',
+	                    _react2.default.createElement(
+	                        'a',
+	                        { href: pull.html_url },
+	                        pull.body
+	                    ),
+	                    '.'
+	                );
+	            });
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var content = void 0;
+	            if (this.state.mode === 'commits') {
+	                content = this.renderCommits();
+	            } else if (this.state.mode === 'forks') {
+	                content = this.renderForks();
+	            } else {
+	                content = this.renderPulls();
+	            }
 	            return _react2.default.createElement(
 	                'div',
 	                null,
-	                commits
+	                _react2.default.createElement(
+	                    'button',
+	                    { onClick: this.selectMode.bind(this, 'commits') },
+	                    'Show Commits'
+	                ),
+	                _react2.default.createElement(
+	                    'button',
+	                    { onClick: this.selectMode.bind(this, 'forks') },
+	                    'Show Forks'
+	                ),
+	                _react2.default.createElement(
+	                    'button',
+	                    { onClick: this.selectMode.bind(this, 'pulls') },
+	                    'Show Pulls'
+	                ),
+	                content
 	            );
 	        }
 	    }]);
