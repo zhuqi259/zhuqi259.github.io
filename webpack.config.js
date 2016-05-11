@@ -6,30 +6,42 @@ var productionPlugin = new webpack.DefinePlugin({
     }
 });
 
+const path = require('path');
+const PATHS = {
+    app: path.join(__dirname, 'src'),
+    build: path.join(__dirname, 'dist')
+};
+
 module.exports = {
+    devtool: 'eval-source-map',
     entry: {
-        app: "./src/index.jsx"
+        app: PATHS.app
     },
     output: {
-        path: 'dist',
+        path: PATHS.build,
         publicPath: '/',
         filename: "bundle.js"
     },
     module: {
         loaders: [{
             test: /\.jsx?$/,
-            exclude: /(node_modules|bower_components)/,
+            include: PATHS.app,
             loader: 'babel',
             query: {
+                cacheDirectory: true,
                 presets: ['react', 'es2015']
             }
+        }, {
+            test: /\.css$/,
+            include: PATHS.app,
+            loaders: ['style', 'css']
         }]
     },
     resolve: {
         extensions: ['', '.js', '.jsx']
     },
     devServer: {
-        contentBase: './dist',
+        contentBase: PATHS.build,
         hot: true
     },
     plugins: [productionPlugin, new webpack.HotModuleReplacementPlugin()]
