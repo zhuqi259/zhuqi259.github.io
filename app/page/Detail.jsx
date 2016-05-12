@@ -15,7 +15,7 @@ class Detail extends Component {
         }
     }
     fetchFeed(type) {
-        const baseURL = 'https://api.github.com/repos/saoleigroup';
+        const baseURL = 'https://api.github.com/repos/zhuqi259';
         ajax.get(`${baseURL}/${this.props.params.repo}/${type}`).end((error, response) => {
             if (!error && response) {
                 this.setState({[type]: response.body});

@@ -6,7 +6,7 @@ class App extends Component {
     render() {
         return (
             <div>
-                <h1>Unofficial GitHub Browser v1.0 for saoleigroup</h1>
+                <h1>Unofficial GitHub Browser v1.0 for zhuqi259</h1>
                 {this.props.children}
             </div>
         );
